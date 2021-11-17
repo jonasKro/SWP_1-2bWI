@@ -49,7 +49,7 @@ function ergebnis() {
 function random() {
     let random = Math.floor(Math.random() * 100);
 
-    let test = 'eror';
+
     let bot = 0;
     if (random > 66) {
         //schere
@@ -65,7 +65,7 @@ function random() {
         }
 
     }
-    console.log(test);
+
     // console.log(Number);
 }
 
@@ -83,16 +83,16 @@ function checkWinner() {
         } else {
             if (botSelection == 2 && userSelection == 1) {
                 status = "loss";
-                console.log("3");
+                console.log(status);
 
             } else {
                 if (botSelection == 3 && userSelection == 1) {
                     status = "win";
-                    console.log("2");
+                    console.log(status);
                 } else {
                     if (botSelection == 1 && userSelection == 3) {
                         status = "loss";
-                        console.log("3");
+                        console.log(status);
                     } else {
                         status = "error"
                     }
