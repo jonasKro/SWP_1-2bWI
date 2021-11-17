@@ -1,0 +1,11 @@
+.button {
+    width: 100px;
+    height: 100px;
+}
+
+.outerbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+}

@@ -1,0 +1,49 @@
+.box {
+    width: 250px;
+    height: 250px;
+    background-color: blueviolet;
+    position: relative;
+    flex-direction: row;
+}
+
+.outerbox {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.innerbox {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    background-color: bisque;
+    bottom: 0px;
+    right: 0px;
+}
+
+.innerbox2 {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    background-color: bisque;
+    bottom: 0px;
+    left: 0px;
+}
+
+.cornerbox {
+    height: 250px;
+    width: 250px;
+    position: absolute;
+    background-color: greenyellow;
+    bottom: 0px;
+    right: 0px;
+}
+
+.innercornerbox {
+    width: 100px;
+    height: 100px;
+    background-color: grey;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
