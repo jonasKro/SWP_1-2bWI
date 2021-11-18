@@ -1,4 +1,4 @@
-var userSelection = -1; // Scher , 2 stein 3 papier
+var userSelection = -1; // Scher , 2 stei 3 papie
 var botSelection = -1;
 
 document.getElementById("Play").addEventListener("click", function() {
@@ -65,8 +65,9 @@ function random() {
         }
 
     }
+    console.log(botSelection);
+    console.log(userSelection);
 
-    // console.log(Number);
 }
 
 
@@ -94,7 +95,16 @@ function checkWinner() {
                         status = "loss";
                         console.log(status);
                     } else {
-                        status = "error"
+                        if (botSelection == 2 && userSelection == 3) {
+                            status = "loss";
+                            console.log(status);
+                        } else {
+                            if (botSelection == 3 && userSelection == 2
+                            } {
+                                status = "loss";
+                                console.log(status);
+                            }
+                        }
                     }
                 }
 
@@ -105,4 +115,5 @@ function checkWinner() {
 
     }
 
+    alert(status);
 }
