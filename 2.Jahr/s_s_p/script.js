@@ -99,8 +99,7 @@ function checkWinner() {
                             status = "loss";
                             console.log(status);
                         } else {
-                            if (botSelection == 3 && userSelection == 2
-                            } {
+                            if (botSelection == 3 && userSelection == 2) {
                                 status = "loss";
                                 console.log(status);
                             }
