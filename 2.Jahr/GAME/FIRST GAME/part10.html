@@ -17,7 +17,7 @@
     <script type="text/javascript">
         var config = {
             type: Phaser.AUTO,
-            width: 2000,
+            width: 1560,
             height: 800,
             physics: {
                 default: 'arcade',
@@ -35,6 +35,11 @@
             }
         };
 
+
+        var keyd;
+        var keyw;
+        var keya;
+        var player2;
         var player;
         var stars;
         var bombs;
@@ -71,7 +76,11 @@
             let scaleX = this.cameras.main.width / image.width
             let scaleY = this.cameras.main.height / image.height
             let scale = Math.max(scaleX, scaleY)
-            image.setScale(scale).setScrollFactor(0)
+            image.setScale(scale).setScrollFactor(0.3)
+
+            keya = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+            keyd = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+            keyw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.w);
 
 
             //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -80,6 +89,9 @@
             //  Here we create the ground.
             //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
             platforms.create(400, 800, 'floor').setScale(6).refreshBody();
+            platforms.create(2800, 800, 'floor').setScale(6).refreshBody();
+            platforms.create(400, 800, 'floor').setScale(6).refreshBody();
+
 
             //  Now let's create some ledges
             platforms.create(600, 600, 'ground');
@@ -93,8 +105,11 @@
 
             // The player and its settings
             player = this.physics.add.sprite(100, 350, 'dude');
+            player2 = this.physics.add.sprite(100, 350, 'dude');
 
             //  Player physics properties. Give the little guy a slight bounce.
+            player.setBounce(0.2);
+            player.setCollideWorldBounds(true);
             player.setBounce(0.2);
             player.setCollideWorldBounds(true);
 
@@ -136,7 +151,7 @@
                 frameRate: 20
             });
 
-
+            //   this.cameras.main.startFollow(player, true, 1, 1);
 
             //  Input Events
             cursors = this.input.keyboard.createCursorKeys();
@@ -145,7 +160,7 @@
             stars = this.physics.add.group({
                 key: 'star',
                 //repeat: 21,
-                repeat: 21,
+                repeat: 0,
                 setXY: {
                     x: 12,
                     y: 0,
@@ -163,11 +178,11 @@
             bombs = this.physics.add.group();
 
             //  The score
-            scoreText = this.add.text(16, 16, 'score: 0', {
+            scoreText = this.add.text(700, 16, 'score: 0', {
                 fontSize: '32px',
                 fill: '#000'
             });
-            lifecounter = this.add.text(16, 52, 'lifes: 1', {
+            lifecounter = this.add.text(700, 52, 'lifes: 1', {
                 fontSize: '32px',
                 fill: '#000'
             });
@@ -179,6 +194,7 @@
             // this.physics.add.collider(player, jumppad);
             this.physics.add.collider(stars, jumppad);
             this.physics.add.collider(bombs, jumppad);
+            this.physics.add.collider(player2, platforms);
 
             //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
             this.physics.add.overlap(player, stars, collectStar, null, this);
@@ -186,6 +202,12 @@
             this.physics.add.collider(player, bombs, hitBomb, null, this);
 
             this.physics.add.collider(player, jumppad, boost, null, this);
+
+            this.physics.add.overlap(player2, stars, collectStar, null, this);
+
+            this.physics.add.collider(player2, bombs, hitBomb, null, this);
+
+            this.physics.add.collider(player2, jumppad, boost, null, this);
         }
 
         function update() {
@@ -207,14 +229,30 @@
                 player.anims.play('turn');
             }
 
-            if (cursors.up.isDown && player.body.touching.down) {
-                player.setVelocityY(-430);
+            if (keyw.isDown && player2.body.touching.down) {
+                player2.setVelocityY(-430);
             }
+            if (keya.isDown) {
+                player2.setVelocityX(-160);
+
+                player2.anims.play('left', true);
+            } else if (keyd.isDown) {
+                player2.setVelocityX(160);
+
+                player2.anims.play('right', true);
+            } else {
+                player2.setVelocityX(0);
+
+                player2.anims.play('turn');
+            }
+
+
         }
 
         function boost() {
 
             player.setVelocityY(-800);
+            player2.setVelocityY(-800);
 
         }
 
@@ -269,6 +307,10 @@
                 player.setTint(0xff0000);
 
                 player.anims.play('death');
+
+                player2.setTint(0xff0000);
+
+                player2.anims.play('death');
             }
 
 
