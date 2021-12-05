@@ -43,11 +43,16 @@
         var score = 0;
         var gameOver = false;
         var scoreText;
-
+        var gameovertext;
+        var lifecounter;
+        var lifes = 1;
+        var jumppad;
         var game = new Phaser.Game(config);
 
         function preload() {
+
             this.load.image('sky', 'assets/sky.png');
+            this.load.image('jumppad', 'assets/jumppad.png');
             this.load.image('floor', 'assets/floor.png');
             this.load.image('forest', 'assets/forest.png');
             this.load.image('ground', 'assets/platform.png');
@@ -57,6 +62,7 @@
                 frameWidth: 32,
                 frameHeight: 48
             });
+
         }
 
         function create() {
@@ -82,8 +88,11 @@
             platforms.create(1500, 620, 'ground');
             platforms.create(750, 420, 'ground');
 
+            jumppad = this.physics.add.staticGroup();
+            jumppad.create(1000, 600, 'jumppad');
+
             // The player and its settings
-            player = this.physics.add.sprite(100, 450, 'dude');
+            player = this.physics.add.sprite(100, 350, 'dude');
 
             //  Player physics properties. Give the little guy a slight bounce.
             player.setBounce(0.2);
@@ -135,12 +144,12 @@
             //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
             stars = this.physics.add.group({
                 key: 'star',
-                //repeat: 22,
-                repeat: 2,
+                //repeat: 21,
+                repeat: 10,
                 setXY: {
                     x: 12,
                     y: 0,
-                    stepX: 70
+                    stepX: 140
                 }
             });
 
@@ -158,17 +167,25 @@
                 fontSize: '32px',
                 fill: '#000'
             });
+            lifecounter = this.add.text(16, 52, 'lifes: 1', {
+                fontSize: '32px',
+                fill: '#000'
+            });
 
             //  Collide the player and the stars with the platforms
             this.physics.add.collider(player, platforms);
             this.physics.add.collider(stars, platforms);
             this.physics.add.collider(bombs, platforms);
+            // this.physics.add.collider(player, jumppad);
+            this.physics.add.collider(stars, jumppad);
+            this.physics.add.collider(bombs, jumppad);
 
             //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
             this.physics.add.overlap(player, stars, collectStar, null, this);
 
             this.physics.add.collider(player, bombs, hitBomb, null, this);
 
+            this.physics.add.overlap(player, jumppad, boost, null, this);
         }
 
         function update() {
@@ -191,9 +208,19 @@
             }
 
             if (cursors.up.isDown && player.body.touching.down) {
-                player.setVelocityY(-330);
+                player.setVelocityY(-430);
             }
         }
+
+        function boost() {
+
+            player.setVelocityY(-700);
+            star.setVelocityY(-1000);
+            score += 10;
+            scoreText.setText('Score: ' + score);
+        }
+
+
 
         function collectStar(player, star) {
             star.disableBody(true, true);
@@ -203,6 +230,9 @@
             scoreText.setText('Score: ' + score);
 
             if (stars.countActive(true) === 0) {
+
+                lifes += 1;
+                lifecounter.setText('lifes: ' + lifes);
                 //  A new batch of stars to collect
                 stars.children.iterate(function(child) {
 
@@ -210,7 +240,7 @@
 
                 });
 
-                for (i = 0; i <= 2; i++) {
+                for (i = 0; i <= 4; i++) {
                     var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
                     var bomb = bombs.create(x, 16, 'bomb');
@@ -224,13 +254,22 @@
         }
 
         function hitBomb(player, bomb) {
-            this.physics.pause();
 
-            player.setTint(0xff0000);
+            lifes -= 1;
+            lifecounter.setText('Lifes: ' + lifes);
 
-            player.anims.play('death');
+            if (lifes == 0) {
+                gameOver = true;
+                this.physics.pause();
+                gameovertext = this.add.text(300, 300, 'Game Over', {
+                    fontSize: '200px',
+                    fill: '#000'
+                });
+                player.setTint(0xff0000);
 
-            gameOver = true;
+                player.anims.play('death');
+            }
+
         }
     </script>
 
