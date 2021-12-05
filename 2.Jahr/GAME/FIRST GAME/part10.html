@@ -145,11 +145,11 @@
             stars = this.physics.add.group({
                 key: 'star',
                 //repeat: 21,
-                repeat: 10,
+                repeat: 21,
                 setXY: {
                     x: 12,
                     y: 0,
-                    stepX: 140
+                    stepX: 70
                 }
             });
 
@@ -185,7 +185,7 @@
 
             this.physics.add.collider(player, bombs, hitBomb, null, this);
 
-            this.physics.add.overlap(player, jumppad, boost, null, this);
+            this.physics.add.collider(player, jumppad, boost, null, this);
         }
 
         function update() {
@@ -214,10 +214,8 @@
 
         function boost() {
 
-            player.setVelocityY(-700);
-            star.setVelocityY(-1000);
-            score += 10;
-            scoreText.setText('Score: ' + score);
+            player.setVelocityY(-800);
+
         }
 
 
@@ -255,10 +253,13 @@
 
         function hitBomb(player, bomb) {
 
+
+
+
             lifes -= 1;
             lifecounter.setText('Lifes: ' + lifes);
 
-            if (lifes == 0) {
+            if (lifes <= 0) {
                 gameOver = true;
                 this.physics.pause();
                 gameovertext = this.add.text(300, 300, 'Game Over', {
@@ -269,6 +270,8 @@
 
                 player.anims.play('death');
             }
+
+
 
         }
     </script>
