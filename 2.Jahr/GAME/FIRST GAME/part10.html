@@ -41,6 +41,7 @@
         var keya;
         var player2;
         var player;
+        var player3;
         var stars;
         var bombs;
         var platforms;
@@ -56,7 +57,10 @@
 
         function preload() {
 
+
+            this.load.image('bombe', 'assets/bombe.png');
             this.load.image('sky', 'assets/sky.png');
+            this.load.image('gameover', 'assets/gameover.png');
             this.load.image('jumppad', 'assets/jumppad.png');
             this.load.image('floor', 'assets/floor.png');
             this.load.image('forest', 'assets/forest.png');
@@ -66,6 +70,11 @@
             this.load.spritesheet('dude', 'assets/dude.png', {
                 frameWidth: 32,
                 frameHeight: 48
+            });
+
+            this.load.spritesheet('shuriken', 'assets/shuriken.png', {
+                frameWidth: 20,
+                frameHeight: 20
             });
 
         }
@@ -80,7 +89,8 @@
 
             keya = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
             keyd = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-            keyw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.w);
+            keyw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+            keyenter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
 
             //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -105,13 +115,13 @@
 
             // The player and its settings
             player = this.physics.add.sprite(100, 350, 'dude');
-            player2 = this.physics.add.sprite(100, 350, 'dude');
+            player2 = this.physics.add.sprite(132, 350, 'dude');
 
             //  Player physics properties. Give the little guy a slight bounce.
             player.setBounce(0.2);
             player.setCollideWorldBounds(true);
-            player.setBounce(0.2);
-            player.setCollideWorldBounds(true);
+            player2.setBounce(0.2);
+            player2.setCollideWorldBounds(true);
 
             //  Our player animations, turning, walking left and walking right.
             this.anims.create({
@@ -151,7 +161,55 @@
                 frameRate: 20
             });
 
-            //   this.cameras.main.startFollow(player, true, 1, 1);
+            this.anims.create({
+                key: 'left2',
+                frames: this.anims.generateFrameNumbers('dude', {
+                    start: 10,
+                    end: 13
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'turn2',
+                frames: [{
+                    key: 'dude',
+                    frame: 14
+                }],
+                frameRate: 20
+            });
+
+            this.anims.create({
+                key: 'right2',
+                frames: this.anims.generateFrameNumbers('dude', {
+                    start: 15,
+                    end: 18
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'death2',
+                frames: [{
+                    key: 'dude',
+                    frame: 20
+                }],
+                frameRate: 20
+            });
+
+            this.anims.create({
+                key: 'shuriken',
+                frames: [{
+                    key: 'shuriken',
+                    start: 1,
+                    end: 5,
+                }],
+                frameRate: 20,
+                repeat: -1
+            });
+
+            //this.cameras.main.startFollow(player, true, 1, 1);
 
             //  Input Events
             cursors = this.input.keyboard.createCursorKeys();
@@ -160,7 +218,7 @@
             stars = this.physics.add.group({
                 key: 'star',
                 //repeat: 21,
-                repeat: 0,
+                repeat: 21,
                 setXY: {
                     x: 12,
                     y: 0,
@@ -195,32 +253,60 @@
             this.physics.add.collider(stars, jumppad);
             this.physics.add.collider(bombs, jumppad);
             this.physics.add.collider(player2, platforms);
+            this.physics.add.collider(player2, player);
 
             //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
             this.physics.add.overlap(player, stars, collectStar, null, this);
 
             this.physics.add.collider(player, bombs, hitBomb, null, this);
 
-            this.physics.add.collider(player, jumppad, boost, null, this);
+            this.physics.add.collider(player, jumppad, boost1, null, this);
 
             this.physics.add.overlap(player2, stars, collectStar, null, this);
 
             this.physics.add.collider(player2, bombs, hitBomb, null, this);
 
-            this.physics.add.collider(player2, jumppad, boost, null, this);
+            this.physics.add.collider(player2, jumppad, boost2, null, this);
         }
 
         function update() {
-            if (gameOver) {
-                return;
-            }
+
+
+
+            /*if (cursors.left.isDown)
+        {
+            player.setVelocityX(-160);
+
+            player.anims.play('left', true);
+        }
+        else if (cursors.right.isDown)
+        {
+            player.setVelocityX(160);
+
+            player.anims.play('right', true);
+        }
+        else
+        {
+            player.setVelocityX(0);
+
+            player.anims.play('turn');
+        }
+
+        if (cursors.up.isDown && player.body.touching.down)
+        {
+            player.setVelocityY(-330);
+        }
+    }*/
+
+
+
 
             if (cursors.left.isDown) {
-                player.setVelocityX(-160);
+                player.setVelocityX(-180);
 
                 player.anims.play('left', true);
             } else if (cursors.right.isDown) {
-                player.setVelocityX(160);
+                player.setVelocityX(180);
 
                 player.anims.play('right', true);
             } else {
@@ -229,32 +315,41 @@
                 player.anims.play('turn');
             }
 
-            if (keyw.isDown && player2.body.touching.down) {
-                player2.setVelocityY(-430);
+            if (cursors.up.isDown && player.body.touching.down) {
+                player.setVelocityY(-410);
             }
             if (keya.isDown) {
-                player2.setVelocityX(-160);
+                player2.setVelocityX(-180);
 
-                player2.anims.play('left', true);
+                player2.anims.play('left2', true);
             } else if (keyd.isDown) {
-                player2.setVelocityX(160);
+                player2.setVelocityX(180);
 
-                player2.anims.play('right', true);
+                player2.anims.play('right2', true);
             } else {
                 player2.setVelocityX(0);
 
-                player2.anims.play('turn');
+                player2.anims.play('turn2');
+            }
+            if (keyw.isDown && player2.body.touching.down) {
+                player2.setVelocityY(-410);
             }
 
 
         }
 
-        function boost() {
+        function boost1() {
 
             player.setVelocityY(-800);
+
+        }
+
+        function boost2() {
+
             player2.setVelocityY(-800);
 
         }
+
 
 
 
@@ -280,12 +375,20 @@
                     var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
                     var bomb = bombs.create(x, 16, 'bomb');
+                    //  bombs.anims.play('right', true);
                     bomb.setBounce(1);
                     bomb.setCollideWorldBounds(true);
                     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
                     bomb.allowGravity = false;
 
                 }
+            }
+        }
+
+        function restart() {
+            if (gameover == true && keyenter.isdown) {
+                gameover = false;
+
             }
         }
 
@@ -297,21 +400,35 @@
             lifes -= 1;
             lifecounter.setText('Lifes: ' + lifes);
 
+            // if (lifes <= 0) {
+            //     gameOver = true;
+            //     this.physics.pause();
+
+            //     this.add.image(750, 350, 'gameover');
+
+            //     player.setTint(0xff0000);
+
+            //     player.anims.play('death');
+
+            //     player2.setTint(0xff0000);
+
+            //     player2.anims.play('death2');
+            // }
+
             if (lifes <= 0) {
                 gameOver = true;
-                this.physics.pause();
-                gameovertext = this.add.text(300, 300, 'Game Over', {
-                    fontSize: '200px',
-                    fill: '#000'
-                });
-                player.setTint(0xff0000);
 
-                player.anims.play('death');
-
-                player2.setTint(0xff0000);
-
-                player2.anims.play('death');
             }
+            if (gameOver = true) {
+                this.physics.pause();
+                this.add.image(750, 350, 'gameover');
+                player.setTint(0xff0000);
+                player.anims.play('death');
+                player2.setTint(0xff0000);
+                player2.anims.play('death2');
+
+            }
+
 
 
 
