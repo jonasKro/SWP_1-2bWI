@@ -1,0 +1,35 @@
+body {
+    display: flex;
+    align-items: center;
+    background-color: darkcyan;
+    flex-direction: row;
+}
+
+.outerbox {
+    width: 500px;
+    height: 300px;
+    background-color: cadetblue;
+    flex-direction: row;
+    display: flex;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+input {
+    margin: 10px;
+}
+
+.magic {
+    margin: 30px;
+}
+
+.right {
+    margin: 30px;
+    height: 240px;
+    width: 200px;
+    background-color: darkgray;
+}
