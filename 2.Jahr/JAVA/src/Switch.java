@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSInput;
+
 import java.util.Random;
 
 public class Switch {
@@ -26,6 +28,7 @@ public class Switch {
                 System.out.println("zehn");
                 break;
         }
+
     }
 
 
