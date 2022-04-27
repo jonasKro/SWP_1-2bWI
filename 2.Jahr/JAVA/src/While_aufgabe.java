@@ -6,8 +6,9 @@ public class While_aufgabe {
         Random random = new Random();
         int randomNumber = 0;
 
-        while (randomNumber != 15 || randomNumber != 25){
-            randomNumber = random.nextInt(100);
+        while (randomNumber != 15 /*|| randomNumber != 25*/){
+            randomNumber = random.nextInt(10 - 20);
+
             System.out.println(randomNumber);
         }
 
