@@ -17,7 +17,7 @@ public class Würfelspiel {
                 playerscore += randomNumber;
                 System.out.println(randomNumber);
             }
-            System.out.println("Your score is: " + playerscore );
+
 
         } else {
             System.out.println("that was not 1!");
@@ -28,10 +28,15 @@ public class Würfelspiel {
             compscore += randomNumber;
             System.out.println(randomNumber);
         }
-        System.out.println("the computers score is1: " + compscore );
+        System.out.println("the computers score is: " + compscore );
+        System.out.println("Your score is: " + playerscore );
         if (playerscore< compscore){
             System.out.println("you lost!");
-        } else if ()
+        } else if (playerscore> compscore){
+            System.out.println("you won, good job!");
+        } else {
+            System.out.println("It's a draw!");
+        }
 
     }
 }
