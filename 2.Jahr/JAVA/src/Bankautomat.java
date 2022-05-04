@@ -4,7 +4,7 @@ public class Bankautomat {
     public static void main(String[] args) {
         int selection;
         int amount;
-        int kontostand = 0;
+        int kontostand =0;
 
 
         Scanner eingabewert = new Scanner(System.in);
