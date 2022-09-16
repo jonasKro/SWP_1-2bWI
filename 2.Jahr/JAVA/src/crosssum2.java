@@ -4,7 +4,7 @@ public class crosssum2 {
         int userNum = 345;
 
        int result = ziffernwurzel(userNum);
-
+        System.out.println(result);
     }
 
     public static int ziffernwurzel(int num){
