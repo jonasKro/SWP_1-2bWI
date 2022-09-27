@@ -9,36 +9,37 @@ public class Calendar {
         Scanner input = new Scanner(System.in);
         System.out.println("geben sie den gewünschten monat an");
         month = input.nextInt();
+        System.out.println("geben sie den tag an für den Monatsersten");
+        day = input.nextInt();
+        int dayfor = day - 2*day;
+        System.out.println(dayfor);
 
+        for (int i = 0; i < 10; i++) {
 
-        switch (month) {
-            case 1, 3, 5, 7, 8, 10, 12:
-                System.out.println("31 tage");
-                for (int i = 0; i < 31; i++) {
-                    length[i] = i + 1;
-                    ;
-                }
-                break;
-            case 2, 4, 6, 9, 11:
-                System.out.println("30 tage");
-                for (int i = 0; i < 30; i++) {
-                    length[i] = i + 1;
-
-                }
-
-                break;
         }
-            for (int i = 0;i<10;i++){
 
+        System.out.println("|" + days[0] + "|"+"|" + days[1] + "|"+"|" + days[2] + "|"+"|" + days[3] + "|"+"|" + days[4] + "|"+"|" + days[5] + "|"+"|" + days[6] + "|");
+        for (int i = dayfor; i < length.length + day; i++) {
+
+            if (i < 0) {
+                {
+                    System.out.print("|" + "00" + "|");
+                }
+            } else {
+                if (i == 6-day || i == 13-day || i == 20-day || i == 27-day) {
+                    if (i<9){
+                        System.out.print("|" +"0"+length[i] + "| \n");
+                    }else {
+                        System.out.print("|" + length[i] + "| \n");
+                    }
+                } else {
+                    if (i<9){
+                        System.out.print("|" +"0"+length[i] + "|");
+                    }else {
+                        System.out.print("|" + length[i] + "|");
+                    }
+                }
             }
-
-        System.out.println("|" + days[0] + "|" + days[1] + "|" + days[2] + "|" + days[3] + "|" + days[4] + "|" + days[5] + "|" + days[6] + "|");
-        for (int i = 0; i < length.length; i++) {
-
-            if(i==6||i==13||i==20||i==28){
-                System.out.print("|" + length[i] + "| \n" );
-            }
-            else {System.out.print("|" + length[i] + "|");}
         }
 
 
