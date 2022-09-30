@@ -13,6 +13,22 @@ public class Calendar {
         day = input.nextInt();
         int dayfor = day - 2*day;
         System.out.println(dayfor);
+        switch (month) {
+            case 1, 3, 5, 7, 8, 10, 12:
+                System.out.println("31 tage");
+                for (int i = 0; i < 31; i++) {
+                    length[i] = i + 1;
+                    ;
+                }
+                break;
+            case 2, 4, 6, 9, 11:
+                System.out.println("30 tage");
+                for (int i = 0; i < 30; i++) {
+                    length[i] = i + 1;
+                }
+
+                break;
+        }
 
         for (int i = 0; i < 10; i++) {
 
