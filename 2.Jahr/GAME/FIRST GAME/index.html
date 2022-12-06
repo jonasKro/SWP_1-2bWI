@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Fortnite Adventskalender!</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script type="text/javascript">
+        var now = new Date();
+        var date = now.getDate();
+    </script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        var config = {
+            type: Phaser.AUTO,
+            width: 1560,
+            height: 800,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: {
+                        y: 200
+                    },
+                    debug: false
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        var player;
+        var stars;
+        var platforms;
+        var cursors;
+        var scoreText;
+        var gameovertext;
+        var game = new Phaser.Game(config);
+        var d = new Date(year, month, day, hours, minutes, seconds, milliseconds);
+        var door;
+        var month = d.month();
+        var text;
+        var timedEvent;
+        var countert = 1;
+        var timer = true;
+        /*       const doorMeasurements = [{x:60, y:120},{x:230, y:120},{x:430, y:120},{x:630, y:120},{x:830, y:120},{x:1030, y:120},{x:1230, y:120},{x:1430, y:120},
+                                  {x:100, y:310},{x:300, y:310},{x:500, y:310},{x:700, y:310},{x:900, y:310},{x:1100, y:310},{x:1300, y:310},{x:1480, y:310},
+                                  {x:60, y:500},{x:230, y:500},{x:430, y:500},{x:630, y:500},{x:830, y:500},{x:1030, y:500},{x:1230, y:500},{x:1430, y:500},];*/
+
+
+        function preload() {
+
+
+            this.load.image('gameover', 'assets/gameover.png');
+            this.load.image('floor', 'assets/floor.png');
+            this.load.image('forest', 'assets/background.png');
+            this.load.image('ground', 'assets/platform.png');
+            this.load.image('star', 'assets/star.png');
+            this.load.image('pres', 'assets/placeholder.jpg');
+            this.load.image('door1', 'assets/1.jpg');
+            this.load.image('door2', 'assets/2.jpg');
+            this.load.image('door3', 'assets/3.jpg');
+            this.load.image('door4', 'assets/4.jpg');
+            this.load.image('door5', 'assets/5.jpg');
+            this.load.image('door6', 'assets/6.jpg');
+            this.load.image('door7', 'assets/7.jpg');
+            this.load.image('door8', 'assets/8.jpg');
+            this.load.image('door9', 'assets/9.jpg');
+            this.load.image('door10', 'assets/10.jpg');
+            this.load.image('door11', 'assets/11.jpg');
+            this.load.image('door12', 'assets/12.jpg');
+            this.load.image('door13', 'assets/13.jpg');
+            this.load.image('door14', 'assets/14.jpg');
+            this.load.image('door15', 'assets/15.jpg');
+            this.load.image('door16', 'assets/16.jpg');
+            this.load.image('door17', 'assets/17.jpg');
+            this.load.image('door18', 'assets/18.jpg');
+            this.load.image('door19', 'assets/19.jpg');
+            this.load.image('door20', 'assets/20.jpg');
+            this.load.image('door21', 'assets/21.jpg');
+            this.load.image('door22', 'assets/22.jpg');
+            this.load.image('door23', 'assets/23.jpg');
+            this.load.image('door24', 'assets/24.jpg');
+            this.load.image('snowpoint', 'assets/snowPoint.png');
+            this.load.image('gift2', 'assets/gift_2.jpg');
+            this.load.image('gift3', 'assets/gift_5.jpg');
+            this.load.image('frame', 'assets/frame.png');
+            this.load.image('frame2', 'assets/frame2.png');
+            this.load.spritesheet('dude', 'assets/santa.png', {
+                frameWidth: 32,
+                frameHeight: 48
+            });
+        }
+
+        function create() {
+            let image = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'forest')
+            let scaleX = this.cameras.main.width / image.width
+            let scaleY = this.cameras.main.height / image.height
+            let scale = Math.max(scaleX, scaleY)
+            image.setScale(scale).setScrollFactor(0.3)
+
+            keya = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+            keyd = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+            keyw = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+            keyenter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
+            platforms = this.physics.add.staticGroup();
+            platforms.create(770, 689, 'floor').setScale(3.9).refreshBody();
+
+            snowpoint = this.physics.add.staticGroup();
+            snowpoint.create(200, 1330, snowpoint);
+
+            frame = this.physics.add.staticGroup();
+            frame.create(60, 120, 'frame2');
+            frame.create(230, 120, 'frame2');
+            frame.create(430, 120, 'frame2');
+            frame.create(630, 120, 'frame2');
+            frame.create(830, 120, 'frame2');
+            frame.create(1030, 120, 'frame2');
+            frame.create(1230, 120, 'frame2');
+            frame.create(1430, 120, 'frame2');
+
+            frame.create(100, 310, 'frame2');
+            frame.create(300, 310, 'frame2');
+            frame.create(500, 310, 'frame2');
+            frame.create(700, 310, 'frame2');
+            frame.create(900, 310, 'frame2');
+            frame.create(1100, 310, 'frame2');
+            frame.create(1300, 310, 'frame2');
+            frame.create(1480, 310, 'frame2');
+
+            frame.create(60, 495, 'frame2');
+            frame.create(230, 495, 'frame2');
+            frame.create(430, 495, 'frame2');
+            frame.create(630, 495, 'frame2');
+            frame.create(830, 495, 'frame2');
+            frame.create(1030, 495, 'frame2');
+            frame.create(1230, 495, 'frame2');
+            frame.create(1430, 490, 'frame');
+
+            doors = this.physics.add.staticGroup();
+            doors.create(60, 120, 'door1');
+            doors.create(230, 120, 'door2');
+            doors.create(430, 120, 'door3');
+            doors.create(630, 120, 'door4');
+            doors.create(830, 120, 'door5');
+            doors.create(1030, 120, 'door6');
+            doors.create(1230, 120, 'door7');
+            doors.create(1430, 120, 'door8');
+
+            doors.create(100, 310, 'door9');
+            doors.create(300, 310, 'door10');
+            doors.create(500, 310, 'door11');
+            doors.create(700, 310, 'door12');
+            doors.create(900, 310, 'door13');
+            doors.create(1100, 310, 'door14');
+            doors.create(1300, 310, 'door15');
+            doors.create(1480, 310, 'door16');
+
+            doors.create(60, 495, 'door17');
+            doors.create(230, 495, 'door18');
+            doors.create(430, 495, 'door19');
+            doors.create(630, 495, 'door20');
+            doors.create(830, 495, 'door21');
+            doors.create(1030, 495, 'door22');
+            doors.create(1230, 495, 'door23');
+            doors.create(1430, 490, 'door24');
+
+            pres = this.physics.add.staticGroup();
+            pres.create(60, 120, 'gift3');
+            pres.create(230, 120, 'gift2');
+            pres.create(430, 120, 'gift3');
+            pres.create(630, 120, 'gift3');
+            pres.create(830, 120, 'gift2');
+            pres.create(1030, 120, 'gift2');
+            pres.create(1230, 120, 'gift3');
+            pres.create(1430, 120, 'gift3');
+
+            pres.create(100, 310, 'gift3');
+            pres.create(300, 310, 'gift2');
+            pres.create(500, 310, 'gift3');
+            pres.create(700, 310, 'gift2');
+            pres.create(900, 310, 'gift3');
+            pres.create(1100, 310, 'gift3');
+            pres.create(1300, 310, 'gift3');
+            pres.create(1480, 310, 'gift2');
+
+            pres.create(60, 495, 'gift2');
+            pres.create(230, 495, 'gift3');
+            pres.create(430, 495, 'gift2');
+            pres.create(630, 495, 'gift3');
+            pres.create(830, 495, 'gift3');
+            pres.create(1030, 495, 'gift2');
+            pres.create(1230, 495, 'gift3');
+            pres.create(1430, 493, 'pres');
+
+            lock = this.physics.add.staticGroup();
+            snow = this.physics.add.group();
+
+
+            switch (date) {
+                case 1:
+                    lock.create(230, 120, 'gift2');
+                    lock.create(430, 120, 'gift3');
+                    lock.create(630, 120, 'gift3');
+                    lock.create(830, 120, 'gift2');
+                    lock.create(1030, 120, 'gift2');
+                    lock.create(1230, 120, 'gift3');
+                    lock.create(1430, 120, 'gift3');
+
+                    lock.create(100, 310, 'gift3');
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 2:
+                    lock.create(430, 120, 'gift3');
+                    lock.create(630, 120, 'gift3');
+                    lock.create(830, 120, 'gift2');
+                    lock.create(1030, 120, 'gift2');
+                    lock.create(1230, 120, 'gift3');
+                    lock.create(1430, 120, 'gift3');
+
+                    lock.create(100, 310, 'gift3');
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 3:
+                    lock.create(630, 120, 'gift3');
+                    lock.create(830, 120, 'gift2');
+                    lock.create(1030, 120, 'gift2');
+                    lock.create(1230, 120, 'gift3');
+                    lock.create(1430, 120, 'gift3');
+
+                    lock.create(100, 310, 'gift3');
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 4:
+                    lock.create(830, 120, 'gift2');
+                    lock.create(1030, 120, 'gift2');
+                    lock.create(1230, 120, 'gift3');
+                    lock.create(1430, 120, 'gift3');
+
+                    lock.create(100, 310, 'gift3');
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 5:
+                    lock.create(1030, 120, 'gift2');
+                    lock.create(1230, 120, 'gift3');
+                    lock.create(1430, 120, 'gift3');
+
+                    lock.create(100, 310, 'gift3');
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 6:
+                    lock.create(1230, 120, 'gift3');
+                    lock.create(1430, 120, 'gift3');
+
+                    lock.create(100, 310, 'gift3');
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 7:
+                    lock.create(1430, 120, 'gift3');
+
+                    lock.create(100, 310, 'gift3');
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 8:
+                    lock.create(100, 310, 'gift3');
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 9:
+                    lock.create(300, 310, 'gift2');
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 10:
+                    lock.create(500, 310, 'gift3');
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 11:
+                    lock.create(700, 310, 'gift2');
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 12:
+                    lock.create(900, 310, 'gift3');
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 13:
+                    lock.create(1100, 310, 'gift3');
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 14:
+                    lock.create(1300, 310, 'gift3');
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 15:
+                    lock.create(1480, 310, 'gift2');
+
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 16:
+                    lock.create(60, 495, 'gift2');
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 17:
+                    lock.create(230, 495, 'gift3');
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 18:
+                    lock.create(430, 495, 'gift2');
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 19:
+                    lock.create(630, 495, 'gift3');
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 20:
+                    lock.create(830, 495, 'gift3');
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 21:
+                    lock.create(1030, 495, 'gift2');
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 22:
+                    lock.create(1230, 495, 'gift3');
+                    lock.create(1430, 495, 'pres');
+                    break;
+                case 23:
+                    lock.create(1430, 490, 'pres');
+                    break;
+                default:
+
+                    break;
+
+            }
+
+
+            console.log(date);
+
+            pres.getChildren();
+
+            player = this.physics.add.sprite(750, 487, 'dude');
+            player.setBounce(0.2);
+            player.setCollideWorldBounds(true);
+
+            this.anims.create({
+                key: 'left',
+                frames: this.anims.generateFrameNumbers('dude', {
+                    start: 0,
+                    end: 3
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'turn',
+                frames: [{
+                    key: 'dude',
+                    frame: 4
+                }],
+                frameRate: 20
+            });
+            this.anims.create({
+                key: 'right',
+                frames: this.anims.generateFrameNumbers('dude', {
+                    start: 5,
+                    end: 8
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'death',
+                frames: [{
+                    key: 'dude',
+                    frame: 9
+                }],
+                frameRate: 20
+            });
+
+            cursors = this.input.keyboard.createCursorKeys();
+
+            /*    stars = this.physics.add.group({
+                    key: 'star',
+                    repeat: 21,
+                    setXY: {
+                        x: 12,
+                        y: 0,
+                        stepX: 70
+                    }
+                }); */
+            trigger = this.physics.add.group({
+                key: 'star',
+                setXY: {
+                    x: 200,
+                    y: 1130,
+
+                }
+            });
+
+            //   stars.children.iterate(function(child) {
+            //       child.setBounceY(Phaser.Math.FloatBetween(0.4, 1));
+            //   });
+
+            this.physics.add.collider(player, platforms);
+            this.physics.add.collider(player, doors);
+            this.physics.add.collider(player, lock);
+            this.physics.add.collider(player, pres, hitPres, null, this);
+            this.physics.add.overlap(player, snow, hitSnow, null, this);
+            this.physics.add.collider(trigger, snowpoint, snowRepeat, null, this);
+            this.physics.add.collider(platforms, snow, snowEnd, null, this);
+            this.physics.add.collider(player, frame);
+            // this.physics.add.overlap(snow, snowpoint, snowRepeat, null, this);
+
+            var tuttext = "Bewege dich mit den Peiltasten und berühre die Kästchen,\n                          bevor der Countdown abläuft";
+            tutorial = this.add.text(260, 636, tuttext, {
+                font: "36px Arial",
+                fill: "#ffffff",
+                align: "centre"
+
+            })
+            tutorial.setShadow(4, 4, 'rgba(0, 0, 0, 0.5)', 0);
+            if (date < 24) {
+                day = this.add.text(360, 16, "Heute kannst du bis zum " + date + "ten Türchen öffnen!", {
+                    font: "36px Arial",
+                    fill: "#ffffff",
+                    align: "centre"
+                })
+                day.setShadow(4, 4, 'rgba(0, 0, 0, 0.5)', 0);
+            } else {
+                day = this.add.text(430, 16, "Heute kannst du alle Türchen öffnen!", {
+                    font: "36px Arial",
+                    fill: "#ffffff",
+                    align: "centre"
+                })
+                day.setShadow(4, 4, 'rgba(0, 0, 0, 0.5)', 0);
+            }
+
+            this.initialTime = date * 10;
+            var timercolor = date * 10;
+
+            text = this.add.text(1222, 22, 'Countdown: ' + this.initialTime, {
+                font: "36px Arial",
+                fill: "#ffffff",
+                align: "centre"
+            });
+
+            // Each 1000 ms call onEvent
+            timedEvent = this.time.addEvent({
+                delay: 1000,
+                callback: onEvent,
+                callbackScope: this,
+                repeat: timercolor - 1
+            });
+
+        }
+
+        function update() {
+            if (cursors.left.isDown) {
+                player.setVelocityX(-180);
+                player.anims.play('left', true);
+            } else if (cursors.right.isDown) {
+                player.setVelocityX(180);
+                player.anims.play('right', true);
+            } else {
+                player.setVelocityX(0);
+                player.anims.play('turn');
+            }
+            if (cursors.up.isDown && player.body.touching.down) {
+                player.setVelocityY(-280);
+            }
+
+            if (countert = date) {
+                timer = false
+            }
+            if (this.initialTime < 1 && !timer) {
+                this.physics.pause();
+                this.add.image(750, 350, 'gameover');
+                player.setTint(0xff0000);
+                gameover = true;
+            }
+        }
+
+        function snowRepeat() {
+            for (let i = 0; i < 25; i++) {
+                var veloY = Phaser.Math.Between(-200, -50)
+                snow.create(Phaser.Math.Between(20, 200) + i * 70, veloY, 'star')
+
+            }
+
+            trigger.setVelocityY(-70);
+        }
+
+        function hitPres(player, pres) {
+
+            pres.disableBody(true, true);
+
+        }
+
+        function snowEnd(platform, snow) {
+            snow.destroy();
+        }
+
+        function hitSnow(player, snow) {
+            snow.destroy();
+        }
+
+        function onEvent() {
+            this.initialTime -= 1; // One second
+
+            if (this.initialTime < (date * 10) / 2) {
+                text.setText('Countdown: ' + this.initialTime, {
+                    font: "36px Arial",
+                    fill: "#ff8800",
+                    align: "centre"
+                });
+                text.setShadow(4, 4, 'rgba(0, 0, 0, 0.5)', 0);
+            } else {
+                text.setText('Countdown: ' + this.initialTime, {
+                    font: "36px Arial",
+                    fill: "#ffffff",
+                    align: "centre"
+                });
+                text.setShadow(4, 4, 'rgba(0, 0, 0, 0.5)', 0);
+            }
+
+
+        }
+        //    function collectStar(player, star) {
+        //       star.disableBody(true, true);
+        //      if (stars.countActive(true) === 0) {
+        //           stars.children.iterate(function(child) {
+        //               child.enableBody(true, child.x, 0, true, true);
+        //           });
+        //       }
+        //   }
+    </script>
+
+</body>
+
+</html>

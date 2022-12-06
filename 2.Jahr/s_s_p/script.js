@@ -1,5 +1,9 @@
 var userSelection = -1; // Scher , 2 stei 3 papie
 var botSelection = -1;
+var d = new Date(day);
+var day = d.getDate();
+console.log(day);
+
 
 document.getElementById("Play").addEventListener("click", function() {
 

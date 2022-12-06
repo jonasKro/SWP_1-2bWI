@@ -1,6 +1,12 @@
 package oo_start;
 
+import java.util.List;
+
 public class Cars {
+
+    private Mirrors mirrors;
+    private Motors motors;
+    private int speed;
     private int fuelConsumption;
     private int tanksize;
     private int fuel;
@@ -8,10 +14,25 @@ public class Cars {
     private String serialNumber;
     private String color;
 
-    public Cars(int fuelConsumption, int tanksize, int fuel){
-        this.fuelConsumption = fuelConsumption;
+    public Cars(int tanksize, int fuel, int fuelConsumption){
         this.tanksize = tanksize;
         this.fuel = fuel;
+        this.fuelConsumption = fuelConsumption;
+        this.Mirrors = List<Mirrors>(mirrors);
+    }
+    public Motors getMotors() {
+        return motors;
+    }
+
+    public void setMotors(Motors motors) {
+        this.motors = motors;
+    }
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
     public int getFuelConsumption() {
         return fuelConsumption;
@@ -54,8 +75,9 @@ public class Cars {
     }
 
     public void Drive(){
-        this.fuel = (this.fuel-this.fuelConsumption)/100*100;
+        this.fuel = this.fuel-((this.fuelConsumption/100)*getMotors().getSpeed());
         System.out.println("car is driving");
+        System.out.println( "fuel is at:"+this.fuel);
     }
     public void Brake(){
         System.out.println("ich bremse");
@@ -70,10 +92,12 @@ public class Cars {
     }
     public void Honk(int reps){
         for (int i=0; i<reps;i++){
-            System.out.println("hooooonk!!!");
+            System.out.println("honkq   ");
         }
     }
     public void GetRemainingRange(){
         System.out.println(this.fuel/(this.fuelConsumption+1) +"km");
     }
+
+
 }

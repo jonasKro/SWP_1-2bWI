@@ -4,6 +4,11 @@ public class Motors {
     private int speed;
     private String brand;
 
+
+    public Motors(int speed){
+        this.speed = speed;
+
+    }
     public int getSpeed() {
         return speed;
     }

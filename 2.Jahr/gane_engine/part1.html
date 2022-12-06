@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Fortnite Adventskalender!</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script type="text/javascript">
+        var now = new Date();
+        var date = now.getDate();
+    </script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        var config = {
+            type: Phaser.AUTO,
+            width: 1560,
+            height: 800,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: {
+                        y: 300
+                    },
+                    debug: false
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+
+        var keyd;
+        var keyw;
+        var keya;
+        var lava;
+        var player2;
+        var player;
+        var player3;
+        var stars;
+        var bombs;
+        var platforms;
+        var cursors;
+        var score = 0;
+        var gameOver = false;
+        var scoreText;
+        var gameovertext;
+        var lifecounter;
+        var lifes = 1;
+        var jumppad;
+        var game = new Phaser.Game(config);
+        var d = new Date(year, month, day, hours, minutes, seconds, milliseconds);
+        var day = d.getDay();
+        var door;
+
+
+        function preload() {
+
+
+            this.load.image('bombe', 'assets/bombe.png');
+            this.load.image('sky', 'assets/sky.png');
+            this.load.image('gameover', 'assets/gameover.png');
+            this.load.image('jumppad', 'assets/jumppad.png');
+            this.load.image('floor', 'assets/floor.png');
+            this.load.image('forest', 'assets/forest.png');
+            this.load.image('ground', 'assets/platform.png');
+            this.load.image('lava', 'assets/death.png');
+            this.load.image('star', 'assets/star.png');
+            this.load.image('bomb', 'assets/bomb.png');
+            this.load.image('door', 'assets/bomb.png'); //fortnite skin
+            this.load.spritesheet('dude', 'assets/dude.png', {
+                frameWidth: 32,
+                frameHeight: 48
+            });
+
+
+
+        }
+
+        function create() {
+            //  A simple background for our game
+            let image = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'forest')
+            let scaleX = this.cameras.main.width / image.width
+            let scaleY = this.cameras.main.height / image.height
+            let scale = Math.max(scaleX, scaleY)
+            image.setScale(scale).setScrollFactor(0.3)
+
+
+
+
+            platforms = this.physics.add.staticGroup();
+
+
+            platforms.create(400, 800, 'floor').setScale(6).refreshBody();
+
+
+            doors = this.physics.add.staticGroup();
+            doors.create(160, 50, 'door');
+            doors.create(360, 50, 'door');
+            doors.create(560, 50, 'door');
+            doors.create(760, 50, 'door');
+            doors.create(9600, 50, 'door');
+            doors.create(1160, 50, 'door');
+            doors.create(1360, 50, 'door');
+            doors.create(1560, 50, 'door');
+            doors.create(1760, 50, 'door');
+
+
+
+            // The player and its settings
+            player = this.physics.add.sprite(100, 350, 'dude');
+
+
+            //  Player physics properties. Give the little guy a slight bounce.
+            player.setBounce(0.2);
+            player.setCollideWorldBounds(true);
+
+            //  Our player animations, turning, walking left and walking right.
+            this.anims.create({
+                key: 'left',
+                frames: this.anims.generateFrameNumbers('dude', {
+                    start: 0,
+                    end: 3
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'turn',
+                frames: [{
+                    key: 'dude',
+                    frame: 4
+                }],
+                frameRate: 20
+            });
+
+            this.anims.create({
+                key: 'right',
+                frames: this.anims.generateFrameNumbers('dude', {
+                    start: 5,
+                    end: 8
+                }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'death',
+                frames: [{
+                    key: 'dude',
+                    frame: 9
+                }],
+                frameRate: 20
+            });
+
+
+
+
+
+            //  Input Events
+            cursors = this.input.keyboard.createCursorKeys();
+
+            //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+            stars = this.physics.add.group({
+                key: 'star',
+                //repeat: 21,
+                repeat: 21,
+                setXY: {
+                    x: 12,
+                    y: 0,
+                    stepX: 70
+                }
+            });
+
+            stars.children.iterate(function(child) {
+
+                //  Give each star a slightly different bounce
+                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+            });
+
+
+
+            //  The score
+            scoreText = this.add.text(700, 16, 'score: 0', {
+                fontSize: '32px',
+                fill: '#000'
+            });
+            lifecounter = this.add.text(700, 52, 'lifes: 1', {
+                fontSize: '32px',
+                fill: '#000'
+            });
+            if (date == 20) {
+                lifecounter = this.add.text(700, 72, 'month' + date, {
+                    fontSize: '32px',
+                    fill: '#000'
+                });
+            }
+
+            //  Collide the player and the stars with the platforms
+            this.physics.add.collider(player, platforms);
+            this.physics.add.collider(stars, platforms);
+            this.physics.add.collider(bombs, platforms);
+            this.physics.add.collider(player, jumppad);
+            this.physics.add.collider(stars, jumppad);
+            this.physics.add.collider(bombs, jumppad);
+            this.physics.add.collider(player2, platforms);
+            this.physics.add.collider(player2, player);
+            this.physics.add.collider(player2, lava);
+            this.physics.add.collider(player, lava);
+
+            //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+            this.physics.add.overlap(player, stars, collectStar, null, this);
+
+            this.physics.add.collider(player, bombs, hitBomb, null, this);
+            this.physics.add.collider(player, lava, hitlava, null, this);
+
+            this.physics.add.collider(player, jumppad, boost1, null, this);
+
+            this.physics.add.overlap(player2, stars, collectStar, null, this);
+
+            this.physics.add.collider(player2, bombs, hitBomb, null, this);
+            this.physics.add.collider(player2, lava, hitlava, null, this);
+
+            this.physics.add.collider(player2, jumppad, boost2, null, this);
+        }
+
+        function update() {
+
+
+
+            /*if (cursors.left.isDown)
+        {
+            player.setVelocityX(-160);
+
+            player.anims.play('left', true);
+        }
+        else if (cursors.right.isDown)
+        {
+            player.setVelocityX(160);
+
+            player.anims.play('right', true);
+        }
+        else
+        {
+            player.setVelocityX(0);
+
+            player.anims.play('turn');
+        }
+
+        if (cursors.up.isDown && player.body.touching.down)
+        {
+            player.setVelocityY(-330);
+        }
+    }*/
+
+
+
+
+            if (cursors.left.isDown) {
+                player.setVelocityX(-180);
+
+                player.anims.play('left', true);
+            } else if (cursors.right.isDown) {
+                player.setVelocityX(180);
+
+                player.anims.play('right', true);
+            } else {
+                player.setVelocityX(0);
+
+                player.anims.play('turn');
+            }
+
+            if (cursors.up.isDown && player.body.touching.down) {
+                player.setVelocityY(-410);
+            }
+
+
+
+        }
+
+
+        function collectStar(player, star) {
+            star.disableBody(true, true);
+
+            //  Add and update the score
+            score += 10;
+            scoreText.setText('Score: ' + score);
+
+            if (stars.countActive(true) === 0) {
+
+                lifes += 1;
+                lifecounter.setText('lifes: ' + lifes);
+                //  A new batch of stars to collect
+                stars.children.iterate(function(child) {
+
+                    child.enableBody(true, child.x, 0, true, true);
+
+                });
+
+
+            }
+        }
+
+        function restart() {
+            if (gameover == true && keyenter.isdown) {
+                gameover = false;
+
+            }
+        }
+
+        function hitBomb(player, bomb) {
+
+            lifes -= 1;
+            lifecounter.setText('Lifes: ' + lifes);
+        }
+    </script>
+
+</body>
+
+</html>
