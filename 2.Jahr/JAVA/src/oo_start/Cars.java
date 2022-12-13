@@ -1,10 +1,12 @@
 package oo_start;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cars {
-
-    private Mirrors mirrors;
+    private List<Mirrors> mirrors;
+    private List<Wheels> wheels;
     private Motors motors;
     private int speed;
     private int fuelConsumption;
@@ -18,8 +20,26 @@ public class Cars {
         this.tanksize = tanksize;
         this.fuel = fuel;
         this.fuelConsumption = fuelConsumption;
-        this.Mirrors = List<Mirrors>(mirrors);
+        this.mirrors = new ArrayList<>();
+        this.wheels = new ArrayList<>();
     }
+
+    public List<Wheels> getWheels() {
+        return wheels;
+    }
+
+    public void addWheels(Wheels wheels) {
+        this.wheels.add(wheels);
+    }
+
+    public List<Mirrors> getMirrors() {
+        return mirrors;
+    }
+
+    public void addMirrors(Mirrors mirrors) {
+        this.mirrors.add(mirrors);
+    }
+
     public Motors getMotors() {
         return motors;
     }
