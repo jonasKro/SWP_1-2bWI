@@ -20,22 +20,22 @@ public class Remote {
 
     public void addBatteries(Battery batteries) {
 
-        if (batterycount>1){
-            System.out.println("Batterie-Fach voll");
-        }else{
-            this.batteries.add(batteries);
-        }
-        batterycount++;
+        this.batteries.add(batteries);
 
     }
-    public void getstatus(Remote remote){
-        int chargesum = 0;
-        for (int i = 0;i < this.batterycount; i++ ){
-            chargesum += remote.getBatteries().get(i).getCharge();
-        }
-        chargesum = chargesum / this.batterycount;
-        System.out.println(" Die Fernbedienung hat noch "+chargesum +"% akku");
+    public void getstatus(){
 
+        double var = getBatteries().get(0).getCharge();
+        double var2 = getBatteries().get(1).getCharge();
+        double res = (var + var2) /2;
+        System.out.println(" Die Fernbedienung hat noch "+res +"% akku");
+
+    }
+    public void turnOn (){
+        int percentage = 5;
+        getBatteries().get(0).setCharge(getBatteries().get(0).getCharge() - percentage);
+        getBatteries().get(1).setCharge(getBatteries().get(1).getCharge()- percentage );
+        System.out.println("remote is on");
     }
 
 
