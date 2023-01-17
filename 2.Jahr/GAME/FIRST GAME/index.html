@@ -47,9 +47,7 @@
         var scoreText;
         var gameovertext;
         var game = new Phaser.Game(config);
-        var d = new Date(year, month, day, hours, minutes, seconds, milliseconds);
         var door;
-        var month = d.month();
         var text;
         var timedEvent;
         var countert = 1;
@@ -561,7 +559,7 @@
             }
 
 
-            console.log(date);
+
 
             pres.getChildren();
 
@@ -662,7 +660,7 @@
                 day.setShadow(4, 4, 'rgba(0, 0, 0, 0.5)', 0);
             }
 
-            this.initialTime = date * 10;
+            this.initialTime = date * 2;
             var timercolor = date * 10;
 
             text = this.add.text(1222, 22, 'Countdown: ' + this.initialTime, {
@@ -699,11 +697,12 @@
             if (countert = date) {
                 timer = false
             }
-            if (this.initialTime < 1 && !timer) {
+            if (this.initialTime < 1) {
                 this.physics.pause();
                 this.add.image(750, 350, 'gameover');
                 player.setTint(0xff0000);
-                gameover = true;
+
+
             }
         }
 
@@ -720,7 +719,7 @@
         function hitPres(player, pres) {
 
             pres.disableBody(true, true);
-
+            // countDisabledBodies();
         }
 
         function snowEnd(platform, snow) {
@@ -730,6 +729,8 @@
         function hitSnow(player, snow) {
             snow.destroy();
         }
+
+
 
         function onEvent() {
             this.initialTime -= 1; // One second
@@ -752,13 +753,9 @@
 
 
         }
-        //    function collectStar(player, star) {
-        //       star.disableBody(true, true);
-        //      if (stars.countActive(true) === 0) {
-        //           stars.children.iterate(function(child) {
-        //               child.enableBody(true, child.x, 0, true, true);
-        //           });
-        //       }
+        //    function collectStar(player, pres) {
+        //       pres.disableBody(true, true);
+        //  
         //   }
     </script>
 
