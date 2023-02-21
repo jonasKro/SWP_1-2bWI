@@ -15,6 +15,7 @@ public class main {
         r1.getstatus();
         r1.turnOn();
         r1.getstatus();
+        r1.getBatteries();
 
     }
 }

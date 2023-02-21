@@ -1,7 +1,6 @@
-package at.Jonas.examles.lamp;
+package at.Jonas.examples.lamp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Lamps {
 private ArrayList<LEDS> leds;

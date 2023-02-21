@@ -1,4 +1,4 @@
-package at.Jonas.examles.lamp;
+package at.Jonas.examples.lamp;
 
 public class Main {
 public static void main(String[] args){
