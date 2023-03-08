@@ -15,10 +15,10 @@ public class Circle {
         this.radius = radius;
     }
 
-    public void getArea(){
+    public double getArea(){
         double A =0;
         A = this.radius * Math.PI;
-        System.out.println(A);
+        return A;
     }
 }
 

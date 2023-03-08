@@ -15,8 +15,8 @@ public class Square {
         this.a = a;
     }
 
-    public void getArea(){
+    public int getArea(){
         int A = a*a;
-        System.out.println(A);
+        return A;
     }
 }

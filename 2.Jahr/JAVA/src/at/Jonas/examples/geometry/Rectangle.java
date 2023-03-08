@@ -24,8 +24,8 @@ public class Rectangle {
     public void setB(int b) {
         this.b = b;
     }
-    public void getArea(){
+    public int getArea(){
         int A = a*b;
-        System.out.println(A);
+        return A;
     }
 }
