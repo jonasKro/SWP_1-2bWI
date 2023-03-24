@@ -12,6 +12,8 @@ public class Rectangle extends BasicGame {
     private float rectY;
     private boolean rectMovingVert;
     private boolean rectMovingHor;
+    private boolean circleGoingDown;
+    private float circleY;
 
     public Rectangle(String title) {
         super(title);
@@ -27,6 +29,8 @@ public class Rectangle extends BasicGame {
         this.goingLeft = false;
         this.rectMovingVert = true;
         this.rectMovingHor = false;
+        this.circleGoingDown = true;
+        this.circleY = 100;
     }
 
     @Override
@@ -79,6 +83,24 @@ public class Rectangle extends BasicGame {
             System.out.println("moving down");
         }
 
+        //----------------------circ
+
+        if ((int)this.circleY== 600){
+            circleGoingDown = true;
+        }
+        if ((int)this.circleY== 100){
+            circleGoingDown = false;
+        }
+
+        if (circleGoingDown){
+            this.circleY-= (float)delta/speed;
+
+        }
+        if (!circleGoingDown){
+            this.circleY+= (float)delta/speed;
+
+        }
+
 
 
     }
@@ -87,7 +109,7 @@ public class Rectangle extends BasicGame {
     public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
         graphics.drawOval(this.x,20,200,100);
         graphics.drawRect(this.rectX,this.rectY,100,100);
-
+        graphics.drawOval(100,circleY,100,100);
     }
 
     public static void main(String[] argv) {
