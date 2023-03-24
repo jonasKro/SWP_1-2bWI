@@ -1,124 +1,34 @@
 package at.jonas.games.firstgame;
 
-import org.newdawn.slick.*;
-import org.newdawn.slick.tests.AnimationTest;
+import org.newdawn.slick.Graphics;
 
-public class Rectangle extends BasicGame {
+import java.util.Random;
+
+public class Rectangle implements Actor{
     private float x;
     private float y;
     private float speed;
-    private boolean goingLeft;
-    private float rectX;
-    private float rectY;
-    private boolean rectMovingVert;
-    private boolean rectMovingHor;
-    private boolean circleGoingDown;
-    private float circleY;
+    private Random random;
 
-    public Rectangle(String title) {
-        super(title);
+    public Rectangle(float x, float y, float speed) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
     }
 
-    @Override
-    public void init(GameContainer gameContainer) throws SlickException {
-        this.x = 110;
-        this.y = 100;
-        this.rectX = 200;
-        this.rectY = 200;
-        this.speed = 3;
-        this.goingLeft = false;
-        this.rectMovingVert = true;
-        this.rectMovingHor = false;
-        this.circleGoingDown = true;
-        this.circleY = 100;
-    }
 
-    @Override
-    public void update(GameContainer gameContainer, int delta) throws SlickException {
-        if ((int)this.x== 600){
-            goingLeft = true;
-        }
-        if ((int)this.x== 100){
-            goingLeft = false;
-        }
+    public void render (Graphics graphics){
 
-        if (goingLeft){
-            this.x-= (float)delta/speed;
-
-        }
-        if (!goingLeft){
-            this.x+= (float)delta/speed;
-
-        }
-
-        if ((int)this.rectX== 600){
-            rectMovingVert = true;
-        }
-        if ((int)this.rectX== 100){
-            rectMovingVert = false;
-        }
-
-        if (rectMovingVert && rectMovingHor){
-            this.rectX-= (float)delta/speed;
-            System.out.println("moving left");
-        }
-        if (!rectMovingVert && !rectMovingHor){
-            this.rectX+= (float)delta/speed;
-            System.out.println("moving right");
-        }
-        //------------------------------------------
-        if ((int)this.rectY== 400){
-            rectMovingHor = true;
-        }
-        if ((int)this.rectY== 200){
-            rectMovingHor = false;
-        }
-
-        if (rectMovingHor && !rectMovingVert){
-            this.rectY-= (float)delta/speed;
-            System.out.println("moving up");
-        }
-        if (!rectMovingHor && rectMovingVert){
-            this.rectY+= (float)delta/speed;
-            System.out.println("moving down");
-        }
-
-        //----------------------circ
-
-        if ((int)this.circleY== 600){
-            circleGoingDown = true;
-        }
-        if ((int)this.circleY== 100){
-            circleGoingDown = false;
-        }
-
-        if (circleGoingDown){
-            this.circleY-= (float)delta/speed;
-
-        }
-        if (!circleGoingDown){
-            this.circleY+= (float)delta/speed;
-
-        }
-
-
+        graphics.drawRect(this.x,this.y, 50, 50);
 
     }
 
-    @Override
-    public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {
-        graphics.drawOval(this.x,20,200,100);
-        graphics.drawRect(this.rectX,this.rectY,100,100);
-        graphics.drawOval(100,circleY,100,100);
-    }
-
-    public static void main(String[] argv) {
-        try {
-            AppGameContainer container = new AppGameContainer(new Rectangle("REKTANGEL"));
-            container.setDisplayMode(800,600,false);
-            container.start();
-        } catch (SlickException e) {
-            e.printStackTrace();
+    public void update(int delta){
+        random = new Random();
+        this.x+= (float)delta/this.speed;
+        if (this.x > random.nextInt(800)+800){
+            this.x = 0;
         }
     }
+
 }
